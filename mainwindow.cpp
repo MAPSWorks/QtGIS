@@ -23,7 +23,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadFile()
 {
-    myWidget->map = new GeoMap();
+    if(myWidget->map!=nullptr) delete myWidget->map;
+    myWidget->map= new GeoMap();
     myWidget->map->loadFile();
     myWidget->update();
 }

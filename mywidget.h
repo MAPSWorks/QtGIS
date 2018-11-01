@@ -3,6 +3,7 @@
 #include "QOpenGLWidget"
 #include "geomap.h"
 #include "geopoint.h"
+#include <QMouseEvent>
 
 
 class MyWidget : public QOpenGLWidget
@@ -16,8 +17,14 @@ public:
     void paintGL();
     void resizeGL(int width,int height);
     GeoPoint xy2screen(GeoPoint pt);
-   // void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
     GeoMap *map;
+
+    double mouseX, mouseY, offsetX = 0, offsetY = 0, newOffsetX = 0, newOffsetY = 0;
+    double scale=0.9;
 
 };
 

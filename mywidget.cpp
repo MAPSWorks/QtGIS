@@ -16,11 +16,18 @@ void MyWidget::initializeGL(){
 
 void MyWidget::resizeGL(int width,int height){
     glViewport(0,0,width,height);
-    glMatrixMode(GL_PROJECTION);
 }
 
+
+
 void MyWidget::paintGL(){
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(offsetX,offsetY,0);
+    glScalef(scale,scale,0);
+
+
     // draw data
     if(this->map!=nullptr)
     {
@@ -71,23 +78,53 @@ GeoPoint MyWidget::xy2screen(GeoPoint pt){
     return screen;
 }
 
-/*
+
 void MyWidget::mousePressEvent(QMouseEvent *event){
-    // mouse click
-    double x,y;
-    x=event->x();
-    y=event->y();
-    double width=this->map->right-this->map->left;
-    double height=this->map->top-this->map->bottom;
-    double window_width=this->width();
-    double window_height=this->height();
-    double real_x,real_y;
-    real_x=x/window_width*width+this->map->left;
-    real_y=y/window_height*height+this->map->bottom;
+    if (event->buttons() == Qt::LeftButton)
+    {
+        // 切换光标样式
+        setCursor(Qt::OpenHandCursor);
+        mouseX = event->x();
+        mouseY = event->y();
+    }
+    if (event->buttons() == Qt::RightButton)
+    {
+        offsetX = 0;
+        offsetY = 0;
+        update();
+    }
 }
-*/
 
+void MyWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (event->buttons() == Qt::LeftButton)
+    {
+        // 计算图像偏移量
+        newOffsetX = 2*(event->x() - mouseX) / this->width();
+        newOffsetY = 2*(mouseY - event->y()) / this->height();
+        offsetX += newOffsetX;
+        offsetY += newOffsetY;
+        update();
+    }
+}
 
+void MyWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    unsetCursor();
+    offsetX += newOffsetX;
+    offsetY += newOffsetY;
+    newOffsetX = 0;
+    newOffsetY = 0;
+}
 
-
+void MyWidget::wheelEvent(QWheelEvent *event)
+{
+    scale -= 0.01 * event->delta();
+    // 限制缩小倍数
+    if (scale < 0.9f)
+    {
+        scale = 0.9f;
+    }
+    update();
+}
 

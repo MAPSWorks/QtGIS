@@ -24,13 +24,13 @@ Graph_DG::Graph_DG(int vexnum, int edge) {
 //析构函数
 Graph_DG::~Graph_DG() {
     for (int i = 0; i < this->vexnum; i++) {
-        delete this->arc[i];
-        delete this->dis[i];
-        delete this->path[i];
+        delete[] this->arc[i];
+        delete[] this->dis[i];
+        delete[] this->path[i];
     }
-    delete dis;
-    delete arc;
-    delete path;
+    delete[] dis;
+    delete[] arc;
+    delete[] path;
 }
 
 void Graph_DG::printMatrix() {

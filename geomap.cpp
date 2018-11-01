@@ -10,11 +10,13 @@ GeoMap::GeoMap()
 
 GeoMap::~GeoMap()
 {
-    delete this->graph;
+    if(graph!=nullptr) delete this->graph;
+    if(arcs.size()!=0)
     for(auto arc:arcs)
     {
         delete arc;
     }
+    if(nodes.size()!=0)
     for(auto node:nodes)
     {
         delete node;
@@ -23,7 +25,7 @@ GeoMap::~GeoMap()
 
 void GeoMap::loadFile()
 {
-    QFileDialog *fileDialog = new QFileDialog(nullptr,"open E00 File!","C:\\Users\\38230\\Desktop","*.e00");
+    QFileDialog *fileDialog = new QFileDialog(nullptr,"open E00 File!","D:\\MyCplusProject\\TinyGIS\\data","*.e00");
     QString filePath;
     if(fileDialog->exec())
     {
